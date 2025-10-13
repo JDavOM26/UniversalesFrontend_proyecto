@@ -1,0 +1,16 @@
+<div class="dialog-container">
+  <h2>Ingresar monto aprobado</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="grid-container">
+      <mat-form-field class="example-full-width">
+        <mat-label>Causa del rechazo</mat-label>
+        <input matInput formControlName="observacion">
+        <mat-error *ngIf="form.get('observacion')?.hasError('required')">La observacion es requerida</mat-error>
+      </mat-form-field>
+      </div>
+    <div class="button-container">
+      <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+      <button class="btn btn-custom" type="submit" [disabled]="!form.valid">Guardar</button>
+    </div>
+  </form>
+</div>

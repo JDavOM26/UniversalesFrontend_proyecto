@@ -1,0 +1,326 @@
+<app-navbar-component></app-navbar-component>
+<br>
+<div class="crear-poliza-contenedor">
+
+    <mat-stepper [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>Ingresar cliente</ng-template>
+
+                <div class="grid-container documentos">
+                    <mat-form-field>
+                        <mat-label>DPI</mat-label>
+                        <input matInput formControlName="dpi" required
+                            (input)="buscarClientePorDocumento($event.target.value, 'dpi')">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>NIT</mat-label>
+                        <input matInput formControlName="nit" required
+                            (input)="buscarClientePorDocumento($event.target.value, 'nit')">
+                    </mat-form-field>
+                </div>
+
+                <div class="grid-container nombres">
+                    <mat-form-field>
+                        <mat-label>Primer nombre</mat-label>
+                        <input matInput formControlName="primerNombre" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Segundo nombre</mat-label>
+                        <input matInput formControlName="segundoNombre">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Tercer nombre</mat-label>
+                        <input matInput formControlName="tercerNombre">
+                    </mat-form-field>
+                </div>
+                <div class="grid-container apellidos">
+                    <mat-form-field>
+                        <mat-label>Primer apellido</mat-label>
+                        <input matInput formControlName="apellidoPrimero" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Segundo apellido</mat-label>
+                        <input matInput formControlName="apellidoSegundo">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Tercer apellido</mat-label>
+                        <input matInput formControlName="apellidoTercero">
+                    </mat-form-field>
+                </div>
+
+                <div class="grid-container fecha-genero">
+                    <mat-form-field>
+                        <mat-label>Fecha de nacimiento</mat-label>
+                        <input matInput formControlName="fechaNacimiento" type="date" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Género</mat-label>
+                        <mat-select formControlName="genero" required>
+                            <mat-option value="masculino">Masculino</mat-option>
+                            <mat-option value="femenino">Femenino</mat-option>
+                            <mat-option value="otro">Otro</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <hr class="linea">
+                <ng-template matStepLabel>Ingresar Telefono</ng-template>
+                @for (formGroup of telefonoFormGroups; track $index) {
+                <div>
+
+                    <form [formGroup]="formGroup">
+                        <div class="grid-container documentos">
+                            <mat-form-field>
+                                <mat-label>Telefono</mat-label>
+                                <input matInput type="text" formControlName="telefono" required>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </div>
+                }
+                <div class="step-buttons">
+                    <button matButton (click)="addTelefonoForm()">Añadir otro telefono</button>
+                </div>
+                <hr class="linea">
+                <ng-template matStepLabel>Ingresar Correo</ng-template>
+                @for (formGroup of correoFormGroups; track $index) {
+                <div>
+
+                    <form [formGroup]="formGroup">
+                        <div class="grid-container documentos">
+                            <mat-form-field>
+                                <mat-label>Correo</mat-label>
+                                <input matInput type="text" formControlName="correo" required>
+                            </mat-form-field>
+
+                        </div>
+                    </form>
+                </div>
+                }
+                <div class="step-buttons">
+                    <button matButton (click)="addCorreoForm()">Añadir otro correo</button>
+                </div>
+
+                <hr class="linea">
+                <ng-template matStepLabel>Ingresar direcciones</ng-template>
+                @for (formGroup of direccionFormGroups; track $index) {
+                <div>
+
+                    <form [formGroup]="formGroup">
+                        <div class="grid-container documentos">
+                            <mat-form-field>
+                                <mat-label>Direccion</mat-label>
+                                <input matInput type="text" formControlName="direccion" required>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Tipo direccion</mat-label>
+                                <mat-select formControlName="tipoDireccion" required>
+                                    <mat-option value="Cobro">Cobro</mat-option>
+                                    <mat-option value="Fiscal">Fiscal</mat-option>
+                                    <mat-option value="Correspondencia">Correspondencia</mat-option>
+
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </div>
+                }
+                <div class="step-buttons">
+                    <button matButton (click)="addDireccionForm()">Añadir otra direccion</button>
+                </div>
+                <hr class="linea">
+                <div>
+                    <button matButton matStepperNext>Siguiente</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step label="Ingresar beneficiarios">
+            <ng-template matStepLabel>Ingresar beneficiarios</ng-template>
+            @for (formGroup of secondFormGroups; track $index) {
+            <div>
+
+                <form [formGroup]="formGroup">
+                    <hr class="linea">
+                    <div class="grid-container nombres">
+                        <mat-form-field>
+                            <mat-label>Primer nombre</mat-label>
+                            <input matInput formControlName="primerNombre" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Segundo nombre</mat-label>
+                            <input matInput formControlName="segundoNombre">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Tercer nombre</mat-label>
+                            <input matInput formControlName="tercerNombre">
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-container apellidos">
+                        <mat-form-field>
+                            <mat-label>Primer apellido</mat-label>
+                            <input matInput formControlName="apellidoPrimero" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Segundo apellido</mat-label>
+                            <input matInput formControlName="apellidoSegundo">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Tercer apellido</mat-label>
+                            <input matInput formControlName="apellidoTercero">
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-container fecha-genero">
+                        <mat-form-field>
+                            <mat-label>Parentesco</mat-label>
+                            <mat-select formControlName="parentesco" required>
+                                <mat-option value="padre">Padre</mat-option>
+                                <mat-option value="madre">Madre</mat-option>
+                                <mat-option value="hijo">Hijo</mat-option>
+                                <mat-option value="esposo">Esposo</mat-option>
+                                <mat-option value="hermano">Hermano</mat-option>
+                                <mat-option value="nieto">Nieto</mat-option>
+                                <mat-option value="abuelo">Abuelo</mat-option>
+                                <mat-option value="tio">Tío</mat-option>
+                                <mat-option value="sobrino">Sobrino</mat-option>
+                                <mat-option value="otro">Otro</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Género</mat-label>
+                            <mat-select formControlName="genero" required>
+                                <mat-option value="masculino">Masculino</mat-option>
+                                <mat-option value="femenino">Femenino</mat-option>
+                                <mat-option value="otro">Otro</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-container documentos">
+                        <mat-form-field>
+                            <mat-label>Participación</mat-label>
+                            <input matInput type="number" formControlName="participacion" required>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
+            }
+
+            <div class="step-buttons">
+                <button matButton (click)="addBeneficiaryForm()">Añadir otro beneficiario</button>
+            </div>
+            <hr class="linea">
+            <div>
+                <button matButton matStepperPrevious>Volver</button>
+                <button matButton matStepperNext>Siguiente</button>
+            </div>
+        </mat-step>
+        <mat-step label="Ingresar dependientes">
+            <ng-template matStepLabel>Ingresar dependientes</ng-template>
+            @for (formGroup of thirdFormGroups; track $index) {
+            <div>
+
+                <form [formGroup]="formGroup">
+                    <hr class="linea">
+                    <div class="grid-container nombres">
+                        <mat-form-field>
+                            <mat-label>Primer nombre</mat-label>
+                            <input matInput formControlName="primerNombre" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Segundo nombre</mat-label>
+                            <input matInput formControlName="segundoNombre">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Tercer nombre</mat-label>
+                            <input matInput formControlName="tercerNombre">
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-container apellidos">
+                        <mat-form-field>
+                            <mat-label>Primer apellido</mat-label>
+                            <input matInput formControlName="apellidoPrimero" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Segundo apellido</mat-label>
+                            <input matInput formControlName="apellidoSegundo">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Tercer apellido</mat-label>
+                            <input matInput formControlName="apellidoTercero">
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-container fecha-genero">
+                        <mat-form-field>
+                            <mat-label>Fecha de nacimiento</mat-label>
+                            <input matInput formControlName="fechaNacimiento" type="date" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Parentesco</mat-label>
+                            <mat-select formControlName="parentesco" required>
+                                <mat-option value="padre">Padre</mat-option>
+                                <mat-option value="madre">Madre</mat-option>
+                                <mat-option value="hijo">Hijo</mat-option>
+                                <mat-option value="esposo">Esposo</mat-option>
+                                <mat-option value="hermano">Hermano</mat-option>
+                                <mat-option value="nieto">Nieto</mat-option>
+                                <mat-option value="abuelo">Abuelo</mat-option>
+                                <mat-option value="tio">Tío</mat-option>
+                                <mat-option value="sobrino">Sobrino</mat-option>
+                                <mat-option value="otro">Otro</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
+            }
+            <div class="step-buttons">
+                <button matButton (click)="addDependienteForm()">Añadir otro dependiente</button>
+            </div>
+            <hr class="linea">
+            <div>
+                <button matButton matStepperPrevious>Volver</button>
+                <button matButton matStepperNext>Siguiente</button>
+            </div>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Emitir poliza</ng-template>
+            <form [formGroup]="polizaFormGroup">
+                <div class="grid-container nombres">
+                    <mat-form-field>
+                        <mat-label>Nombre poliza</mat-label>
+                        <input matInput formControlName="nombrePoliza" required>
+                    </mat-form-field>
+                   <mat-form-field class="example-full-width">
+                    <mat-label>Paquete</mat-label>
+                    <input type="text" placeholder="Pick one" matInput [formControl]="myControl"
+                        [matAutocomplete]="auto">
+                    <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="displayFn"
+                        (optionSelected)="onOptionSelected($event)">
+                        @for (option of filteredOptions | async; track option) {
+                        <mat-option [value]="option.idPaquete">{{ option.nombre }}</mat-option>
+                        }
+                    </mat-autocomplete>
+                </mat-form-field>
+
+                </div>
+                <div class="grid-container nombres">
+                    <mat-form-field>
+                        <mat-label>Fecha de emisión</mat-label>
+                        <input matInput formControlName="fechaCreacion" [value]="hoy" required readonly>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Fecha de vencimiento</mat-label>
+                        <input matInput formControlName="fechaVencimiento" [value]="unAnioMenosUnDia" required readonly>
+                    </mat-form-field>
+                </div>
+            </form>
+            <div>
+                <button matButton matStepperPrevious>Volver</button>
+                <button matButton color="primary" (click)="guardarPoliza()">Guardar Póliza</button>
+                <button matButton (click)="stepper.reset()">Reiniciar</button>
+            </div>
+        </mat-step>
+    </mat-stepper>
+</div>
+
+<app-progress-spinner-component *ngIf="isLoading"></app-progress-spinner-component>

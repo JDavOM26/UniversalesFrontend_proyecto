@@ -1,0 +1,45 @@
+.dialog-container {
+  width: 400px;
+  padding: 24px;
+     align-items: center;
+}
+
+.dialog-container h2 {
+  margin: 0 0 24px 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.grid-container {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-label {
+  display: block;
+  font-weight: 500;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn-custom {
+  background-color: #00457e;
+  color: #fff;       
+  border: none;
+}
+
+.btn-custom:hover {
+  background-color: #00345e; 
+}

@@ -1,0 +1,108 @@
+<app-navbar-component></app-navbar-component>
+<br>
+<br>
+<br>
+<div class="crear-paquetes-contenedor">
+    <mat-card>
+        <h2>Seguimiento de reclamos</h2>
+        <mat-card-content>
+            <div class="filter-container">
+                <input type="text" [(ngModel)]="filterValue" (input)="applyFilter($event)" placeholder="Filtrar..."
+                    class="filter-input">
+            </div>
+
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="id-reclamo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id">
+                            ID Reclamo
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.idReclamo}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="id-cobertura">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by cobertura">
+                            ID Cobertura
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.idCobertura}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="id-poliza">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by poliza">
+                            ID Póliza
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.idPoliza}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="estado-reclamo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by estado">
+                            Estado Reclamo
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.estadoReclamo}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ajustador">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by ajustador">
+                            Ajustador
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.ajustador}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="perito">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by perito">
+                            Perito
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.perito}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="monto-aprobado">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by monto">
+                            Monto Aprobado
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.montoAprobado | currency}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="observacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                            sortActionDescription="Sort by observacion">
+                            Observación
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.observacion}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="fecha-siniestro">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date">
+                            Fecha Siniestro
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.fechaSiniestro | date}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="fecha-ingreso-reclamo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date">
+                            Fecha Ingreso Reclamo
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.fechaIngresoReclamo | date}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="acciones">
+                        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button (click)="aprobarReclamo(element)"
+                                class="btn btn-outline-warning">Aprobar</button>
+                            <button (click)="rechazarReclamo(element)"
+                                class="btn btn-outline-warning">Rechazar</button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator #paginator1 [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                    aria-label="Select page of periodic elements">
+                </mat-paginator>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+
+<app-progress-spinner-component *ngIf="isLoading"></app-progress-spinner-component>

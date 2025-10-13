@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-lg custom-navbar">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="#">
+      <img src="/logo_white.png" alt="Logo Dashboard Seguros" class="navbar-logo">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+
+        @if (rol === 'Administrador') {
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/empleados">Empleados</a>
+          </li>
+        }
+
+        @if (rol === 'Emisor') {
+          <li class="nav-item">
+            <a class="nav-link" href="/coberturas">Coberturas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/paquetes">Paquetes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/polizas">Polizas</a>
+          </li>
+        }
+
+        @if (rol === 'Ajustador') {
+          <li class="nav-item">
+            <a class="nav-link" href="/ajustador-reclamo">Emitir reclamo</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ajustador-estado-reclamo">Ver estados</a>
+          </li>
+        }
+
+        <li class="nav-item">
+          <a class="nav-link btn-logout" href="#">Cerrar Sesión</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>

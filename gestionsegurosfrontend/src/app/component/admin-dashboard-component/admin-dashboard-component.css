@@ -1,0 +1,16 @@
+
+
+.dashboard-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  height: 100vh;           
+  gap: 20px;              
+  flex-wrap: wrap;          
+}
+
+.dashboard-card {
+  width: 250px;            
+  text-align: center;
+}
+

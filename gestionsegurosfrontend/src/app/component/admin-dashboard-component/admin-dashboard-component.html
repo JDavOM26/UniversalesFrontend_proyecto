@@ -1,0 +1,41 @@
+<app-navbar-component></app-navbar-component>
+<br>
+
+<mat-grid-list cols="4" rowHeight="150px" gutterSize="16px">
+<div class="dashboard-container">
+  <mat-card class="dashboard-card">
+    <mat-card-title>Total Prima Vendida</mat-card-title>
+    <mat-card-content>
+      <p>Hoy: {{ primaDia | currency }}</p>
+      <p>Mes: {{ primaMes | currency }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card">
+    <mat-card-title>Total Costos Siniestros</mat-card-title>
+    <mat-card-content>
+      <p>Hoy: {{ costosDia | currency }}</p>
+      <p>Mes: {{ costosMes | currency }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card">
+    <mat-card-title>Total Pólizas Vendidas</mat-card-title>
+    <mat-card-content>
+      <p>Hoy: {{ polizasDia }}</p>
+      <p>Mes: {{ polizasMes }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card">
+    <mat-card-title>Total Siniestros Atendidos</mat-card-title>
+    <mat-card-content>
+      <p>Hoy: {{ siniestrosDia }}</p>
+      <p>Mes: {{ siniestrosMes }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+</mat-grid-list>
+
+<app-progress-spinner-component *ngIf="isLoading"></app-progress-spinner-component>

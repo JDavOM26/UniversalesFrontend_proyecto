@@ -1,0 +1,73 @@
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-top: 8px;
+  width: 100%;
+}
+
+
+.crear-poliza-contenedor {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.grid-container {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.grid-container.nombres,
+.grid-container.apellidos {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.grid-container.documentos {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.grid-container.fecha-genero {
+  grid-template-columns: 1fr 1fr;
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+
+@media (max-width: 768px) {
+  .mat-step-content {
+    max-width: 100%;
+    padding: 15px;
+  }
+}
+mat-form-field input[readonly] {
+  background-color: #837a7a00; 
+  color: #666; 
+  cursor: not-allowed; 
+  border-bottom: 1px solid #ccc; 
+}
+
+mat-form-field.readonly-field .mat-mdc-form-field-infix {
+  background-color: #f5f5f5; 
+}
+
+
+mat-form-field input[readonly]:focus {
+  outline: none; 
+  box-shadow: none; 
+}
+
+.linea {
+    border: none;
+    height: 2px;
+    background-color: #7d7d7e; 
+    opacity: 1;
+    width: 100%;
+    margin: 20px auto; 
+  }

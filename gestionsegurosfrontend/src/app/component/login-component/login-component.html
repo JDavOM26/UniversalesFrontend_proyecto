@@ -1,0 +1,34 @@
+<div class="mi-contenedor-fondo">
+    <img src="/logo.png" alt="Logo" class="logo">
+
+    <div class="login-contenedor">
+        <mat-card>
+            <mat-card-content>
+                <form [formGroup]="form" (ngSubmit)="submit()">
+                    <p>
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="Username" formControlName="username">
+                        </mat-form-field>
+                    </p>
+
+                    <p>
+                        <mat-form-field>
+                            <input type="password" matInput placeholder="Password" formControlName="password">
+                        </mat-form-field>
+                    </p>
+
+                    <p *ngIf="error" class="error">
+                        {{ error }}
+                    </p>
+
+                    <div class="button">
+                        <button type="submit" mat-button>Iniciar sesión</button>
+                    </div>
+                </form>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<app-progress-spinner-component *ngIf="isLoading"></app-progress-spinner-component>

@@ -1,0 +1,63 @@
+
+.crear-coberturas-contenedor {
+  flex: 1;
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+}
+
+h2{
+  color:#00345e;
+}
+
+
+mat-card {
+  background-color: white;
+  width: 900px;  
+  display: flex;
+  flex-direction: column; 
+  align-items: center;    
+  padding: 20px;
+}
+
+mat-card-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+
+mat-form-field {
+  width: 100%;  
+  margin-bottom: 0; 
+}
+
+
+.btn-custom {
+  background-color: #00457e;
+  color: #fff;       
+  border: none;
+}
+
+.btn-custom:hover {
+  background-color: #00345e; 
+}

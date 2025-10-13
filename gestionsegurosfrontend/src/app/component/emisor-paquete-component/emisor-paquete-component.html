@@ -1,0 +1,80 @@
+<app-navbar-component></app-navbar-component>
+<br><br><br>
+<div class="crear-paquetes-contenedor">
+  <mat-card>
+    <h2>Crear Nuevo Paquete</h2>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="guardarPaquete()">
+        <p>
+          <mat-form-field class="example-full-width">
+            <mat-label>Nombre del paquete</mat-label>
+            <input type="text" matInput formControlName="nombre" placeholder="Nombre del paquete" required>
+            <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+              El nombre del paquete es requerido
+            </mat-error>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field class="example-full-width">
+            <mat-label>Seleccionar Cobertura</mat-label>
+            <input
+              type="text"
+              placeholder="Escribe para buscar..."
+              matInput
+              [formControl]="myControl"
+              [matAutocomplete]="auto"
+            >
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayFn"
+              (optionSelected)="onOptionSelected($event)"
+            >
+              @if ((filteredOptions | async)?.length) {
+                @for (option of filteredOptions | async; track option.idCobertura) {
+                  <mat-option [value]="option.idCobertura">{{ option.nombre }}</mat-option>
+                }
+              } @else {
+                <mat-option disabled>No hay coberturas disponibles</mat-option>
+              }
+            </mat-autocomplete>
+            <mat-error *ngIf="form.get('idCobertura')?.hasError('required') && form.get('idCobertura')?.touched">
+              Debe seleccionar al menos una cobertura
+            </mat-error>
+          </mat-form-field>
+        </p>
+
+       
+        <div class="selected-coberturas">
+          <h3>Coberturas Asignadas</h3>
+          @if (selectedCoberturas.length) {
+            <ul>
+              @for (cobertura of selectedCoberturas; track cobertura.idCobertura) {
+                <li>
+                  {{ cobertura.nombre }}
+                  <button  class="btn btn-custom-cancel" (click)="removeCobertura(cobertura)">
+                    cancelar
+                  </button>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p>No hay coberturas asignadas.</p>
+          }
+        </div>
+
+        <p *ngIf="error" class="error">
+          {{ error }}
+        </p>
+
+        <div class="card flex justify-center gap-2">
+          <button type="submit" class="btn btn-custom" [disabled]="isLoading">
+            Guardar
+          </button>
+          
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<app-progress-spinner-component *ngIf="isLoading"></app-progress-spinner-component>
