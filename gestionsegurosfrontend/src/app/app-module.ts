@@ -39,6 +39,7 @@ import { MatSelectModule } from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { AjustadorEstadoReclamoComponent } from './component/ajustador-estado-reclamo-component/ajustador-estado-reclamo-component';
 import { ProgressSpinnerComponent } from './component/progress-spinner-component/progress-spinner-component';
@@ -86,7 +87,8 @@ import { RechazarReclamoComponent } from './component/rechazar-reclamo-component
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatExpansionModule
   ],
 
   providers: [

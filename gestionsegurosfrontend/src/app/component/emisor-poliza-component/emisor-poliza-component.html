@@ -10,13 +10,23 @@
                 <div class="grid-container documentos">
                     <mat-form-field>
                         <mat-label>DPI</mat-label>
-                        <input matInput formControlName="dpi" required
-                            (input)="buscarClientePorDocumento($event.target.value, 'dpi')">
+                        <input matInput formControlName="dpi" required #dpiInput
+                            (keyup.enter)="buscarClientePorDocumento(dpiInput.value, 'dpi')">
+                        <button mat-icon-button matSuffix color="primary" aria-label="Botón de búsqueda"
+                            [disabled]="isLoading" (click)="buscarClientePorDocumento(dpiInput.value, 'dpi')">
+                            <mat-icon>search</mat-icon>
+                        </button>
+
                     </mat-form-field>
+
                     <mat-form-field>
                         <mat-label>NIT</mat-label>
-                        <input matInput formControlName="nit" required
-                            (input)="buscarClientePorDocumento($event.target.value, 'nit')">
+                        <input matInput formControlName="nit" required #nitInput
+                            (keyup.enter)="buscarClientePorDocumento(nitInput.value, 'nit')">
+                        <button mat-icon-button matSuffix color="primary" aria-label="Botón de búsqueda"
+                            [disabled]="isLoading" (click)="buscarClientePorDocumento(nitInput.value, 'nit')">
+                            <mat-icon>search</mat-icon>
+                        </button>
                     </mat-form-field>
                 </div>
 
@@ -290,17 +300,17 @@
                         <mat-label>Nombre poliza</mat-label>
                         <input matInput formControlName="nombrePoliza" required>
                     </mat-form-field>
-                   <mat-form-field class="example-full-width">
-                    <mat-label>Paquete</mat-label>
-                    <input type="text" placeholder="Pick one" matInput [formControl]="myControl"
-                        [matAutocomplete]="auto">
-                    <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="displayFn"
-                        (optionSelected)="onOptionSelected($event)">
-                        @for (option of filteredOptions | async; track option) {
-                        <mat-option [value]="option.idPaquete">{{ option.nombre }}</mat-option>
-                        }
-                    </mat-autocomplete>
-                </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Paquete</mat-label>
+                        <input type="text" placeholder="Pick one" matInput [formControl]="myControl"
+                            [matAutocomplete]="auto">
+                        <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="displayFn"
+                            (optionSelected)="onOptionSelected($event)">
+                            @for (option of filteredOptions | async; track option) {
+                            <mat-option [value]="option.idPaquete">{{ option.nombre }}</mat-option>
+                            }
+                        </mat-autocomplete>
+                    </mat-form-field>
 
                 </div>
                 <div class="grid-container nombres">

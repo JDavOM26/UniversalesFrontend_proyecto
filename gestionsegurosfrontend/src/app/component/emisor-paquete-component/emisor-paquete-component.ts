@@ -9,6 +9,21 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 interface Paquete {
   nombre: string;
   idCobertura: number[];
+  gastoEmision: number;
+  comisionVenta: number;
+  primaNeta: number;
+  primaTotalSinIva: number;
+  primaTotalConIva: number;
+}
+
+interface Cobertura {
+  idCobertura: number;
+  nombre: string;
+  gastoEmision: number;
+  comisionVenta: number;
+  primaNeta: number;
+  primaTotalSinIva: number;
+  primaTotalConIva: number;
 }
 
 @Component({
@@ -23,15 +38,21 @@ export class EmisorPaqueteComponent implements OnInit {
   private readonly coberturaService = inject(CoberturaService);
   private readonly snackBar = inject(SnackBarService);
 
-  coberturas: any[] = [];
-  selectedCoberturas: any[] = [];
-  filteredOptions!: Observable<any[]>;
+  coberturas: Cobertura[] = [];
+  selectedCoberturas: Cobertura[] = [];
+  filteredOptions!: Observable<Cobertura[]>;
   myControl = new FormControl('');
   isLoading: boolean = true;
 
+
   form: FormGroup = this._formBuilder.group({
     nombre: new FormControl('', Validators.required),
-    idCobertura: new FormControl([], Validators.required), 
+    idCobertura: new FormControl([], Validators.required),
+    gastoEmision: new FormControl({ value: 0, disabled: true }, Validators.required),
+    comisionVenta: new FormControl({ value: 0, disabled: true }, Validators.required),
+    primaNeta: new FormControl({ value: 0, disabled: true }, Validators.required),
+    primaTotalSinIva: new FormControl({ value: 0, disabled: true }, Validators.required),
+    primaTotalConIva: new FormControl({ value: 0, disabled: true }, Validators.required)
   });
 
   @Input() error: string | null | undefined;
@@ -49,6 +70,8 @@ export class EmisorPaqueteComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value || ''))
     );
+    this.form.valueChanges.subscribe(() => this.calcularPrimas());
+    this.form.get('idCobertura')?.valueChanges.subscribe(() => this.calcularPrimas());
   }
 
   private _filter(value: string): any[] {
@@ -85,11 +108,12 @@ export class EmisorPaqueteComponent implements OnInit {
       this.selectedCoberturas.push(selectedCobertura);
       const currentIds = this.form.get('idCobertura')?.value || [];
       this.form.get('idCobertura')?.setValue([...currentIds, selectedCobertura.idCobertura]);
-      this.myControl.reset(); 
+      this.myControl.reset();
       this.filteredOptions = this.myControl.valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value || ''))
       );
+      this.calcularPrimas();
     }
   }
 
@@ -101,11 +125,12 @@ export class EmisorPaqueteComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value || ''))
     );
+    this.calcularPrimas();
   }
 
   async guardarPaquete() {
     if (this.form.valid) {
-      const paquete: Paquete = this.form.value;
+      const paquete: Paquete = this.form.getRawValue();
       this.isLoading = true;
       this.paqueteServicio.guardarPaquete(paquete).subscribe({
         next: (data) => {
@@ -113,10 +138,14 @@ export class EmisorPaqueteComponent implements OnInit {
           this.snackBar.openSnackBar('Paquete guardado exitosamente', 'Cerrar');
           this.submitEM.emit(paquete);
           this.form.reset();
-          this.form.get('idCobertura')?.setValue([]); 
-          this.selectedCoberturas = []; 
+          this.form.get('idCobertura')?.setValue([]);
+          this.selectedCoberturas = [];
           this.myControl.reset();
-        },
+         
+          this.form.patchValue({
+            primaTotalSinIva: 0,
+            primaTotalConIva: 0
+          });},
         error: (error) => {
           console.error('Error al guardar:', error);
           this.isLoading = false;
@@ -127,5 +156,43 @@ export class EmisorPaqueteComponent implements OnInit {
       this.form.markAllAsTouched();
       this.snackBar.openSnackBar('Por favor completa todos los campos requeridos', 'Cerrar');
     }
+  }
+
+  private calcularPrimas(): void {
+
+
+
+
+    const totalGastoEmisionCoberturas = this.selectedCoberturas.reduce(
+      (sum, cobertura) => sum + (Number(cobertura.gastoEmision) || 0),
+      0
+    );
+    const totalComisionVentaCoberturas = this.selectedCoberturas.reduce(
+      (sum, cobertura) => sum + (Number(cobertura.comisionVenta) || 0),
+      0
+    );
+    const totalPrimaNetaCoberturas = this.selectedCoberturas.reduce(
+      (sum, cobertura) => sum + (Number(cobertura.primaNeta) || 0),
+      0
+    );
+
+    const primaTotalSinIva = Number(
+      this.selectedCoberturas
+        .reduce((sum, cobertura) => sum + (Number(cobertura.primaTotalSinIva) || 0), 0)
+        .toFixed(2)
+    );
+    const primaTotalConIva = Number(
+      this.selectedCoberturas
+        .reduce((sum, cobertura) => sum + (Number(cobertura.primaTotalConIva) || 0), 0)
+        .toFixed(2)
+    );
+
+    this.form.patchValue({
+      gastoEmision: totalGastoEmisionCoberturas,
+      comisionVenta: totalComisionVentaCoberturas,
+      primaNeta: totalPrimaNetaCoberturas,
+      primaTotalSinIva: primaTotalSinIva,
+      primaTotalConIva: primaTotalConIva
+    }, { emitEvent: false }); 
   }
 }

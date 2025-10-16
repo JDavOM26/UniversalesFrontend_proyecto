@@ -14,10 +14,9 @@ export class PolizaService {
   return this.postUrl(`${this.apiUrl}/emitir-poliza`, poliza);
 }
 
- buscarPoliza(valor: string, tipoValor: string): Observable<any> {
+ buscarPoliza(valor: string): Observable<any> {
     const params = new HttpParams()
-      .set('valor', valor)
-      .set('tipoValor', tipoValor);
+      .set('valor', valor);
    
     return this.getUrl(`${this.apiUrl}/buscar-poliza`, params);
   }

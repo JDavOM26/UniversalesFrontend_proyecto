@@ -1,4 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DashboardGeneralService } from '../../service/dashboard-general-service';
+interface DashboardData {
+  PRIMAVENDIDADIA: number;
+  PRIMAVENDIDAMES: number;
+  POLIZASVENDIDASDIA: number;
+  POLIZASVENDIDASMES: number;
+  COSTOSINIESTROSDIA: number;
+  COSTOSINIESTROSMES: number;
+  SINIESTROSATENDIDOSDIA: number;
+  SINIESTROSATENDIDOSMES: number;
+}
 
 @Component({
   selector: 'app-admin-dashboard-component',
@@ -6,25 +17,42 @@ import { Component } from '@angular/core';
   templateUrl: './admin-dashboard-component.html',
   styleUrl: './admin-dashboard-component.css'
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit {
   isLoading: boolean = true;
-  
-primaDia: number = 0;
-  primaMes: number = 0;
+  dashboardData: DashboardData = {
+    PRIMAVENDIDADIA: 0,
+    PRIMAVENDIDAMES: 0,
+    POLIZASVENDIDASDIA: 0,
+    POLIZASVENDIDASMES: 0,
+    COSTOSINIESTROSDIA: 0,
+    COSTOSINIESTROSMES: 0,
+    SINIESTROSATENDIDOSDIA: 0,
+    SINIESTROSATENDIDOSMES: 0
+  };
 
-  costosDia: number = 0;
-  costosMes: number = 0;
 
-  polizasDia: number = 0;
-  polizasMes: number = 0;
 
-  siniestrosDia: number = 0;
-  siniestrosMes: number = 0;
+  constructor(private readonly dashboardService: DashboardGeneralService) {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1500);
+  }
 
-  constructor() {
-     setTimeout(() => {
+  ngOnInit(): void {
+    this.obtenerDashboardGeneral();
+  }
+
+  obtenerDashboardGeneral(): void {
+    this.isLoading = true;
+    this.dashboardService.obtenerDashboardGeneral().subscribe({
+      next: (data) => {
+        this.dashboardData = data;
         this.isLoading = false;
-      }, 1500);
-   }
-
+      },
+      error: (error) => {
+        console.error('Error al cargar dashboard:', error);
+        this.isLoading = false;
+      }
+    });
+  }
 }

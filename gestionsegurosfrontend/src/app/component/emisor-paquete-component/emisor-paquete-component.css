@@ -5,29 +5,67 @@
   align-items: center;     
 }
 
+
+
 mat-card {
-    background-color: white;
-    width: 400px;     
-    display: flex;
-    flex-direction: column; 
-    align-items: center;    
-    padding: 20px;
+  background-color: white;
+  width: 900px;  
+  display: flex;
+  flex-direction: column; 
+  align-items: center;    
+  padding: 20px;
 }
 
 mat-card-content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
 }
 
 mat-form-field {
-    width: 350px; 
-    padding: 0%;  
-    margin:0%;   
-    max-width: 350px; 
-    margin-bottom: 15px;
-   
+  width: 100%;  
+  margin-bottom: 0; 
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.coberturas-panel {
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.selected-coberturas ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.selected-coberturas li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.selected-coberturas p {
+  margin: 10px 0;
+  color: #666;
 }
 
 

@@ -10,10 +10,9 @@ export class ClienteService {
 
   constructor(private readonly http: HttpClient) {}
 
-      buscarClientePorDocumento(documento: string, tipoDocumento: string): Observable<any> {
+      buscarClientePorDocumento(valor: string): Observable<any> {
     const params = new HttpParams()
-      .set('documento', documento)
-      .set('tipoDocumento', tipoDocumento);
+      .set('valor', valor);
    
     return this.getUrl(`${this.apiUrl}/buscar-cliente`, params);
   }

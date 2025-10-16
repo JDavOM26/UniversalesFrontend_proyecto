@@ -287,7 +287,7 @@ export class EmisorPolizaComponent implements OnInit {
   buscarClientePorDocumento(documento: string, tipoDocumento: string) {
     if (this.clienteEstaVacio) {
 
-      this.clienteService.buscarClientePorDocumento(documento, tipoDocumento).subscribe({
+      this.clienteService.buscarClientePorDocumento(documento).subscribe({
         next: (data) => {
 
           if (data) {

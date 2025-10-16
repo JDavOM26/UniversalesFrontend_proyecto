@@ -1,11 +1,12 @@
 <app-navbar-component></app-navbar-component>
-<br><br><br>
+<br><br>
 <div class="crear-paquetes-contenedor">
   <mat-card>
     <h2>Crear Nuevo Paquete</h2>
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="guardarPaquete()">
-        <p>
+
+        <div class="grid-2">
           <mat-form-field class="example-full-width">
             <mat-label>Nombre del paquete</mat-label>
             <input type="text" matInput formControlName="nombre" placeholder="Nombre del paquete" required>
@@ -13,65 +14,95 @@
               El nombre del paquete es requerido
             </mat-error>
           </mat-form-field>
-        </p>
-        <p>
+
           <mat-form-field class="example-full-width">
             <mat-label>Seleccionar Cobertura</mat-label>
-            <input
-              type="text"
-              placeholder="Escribe para buscar..."
-              matInput
-              [formControl]="myControl"
-              [matAutocomplete]="auto"
-            >
-            <mat-autocomplete
-              #auto="matAutocomplete"
-              [displayWith]="displayFn"
-              (optionSelected)="onOptionSelected($event)"
-            >
+            <input type="text" placeholder="Escribe para buscar..." matInput [formControl]="myControl"
+              [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+              (optionSelected)="onOptionSelected($event)">
               @if ((filteredOptions | async)?.length) {
-                @for (option of filteredOptions | async; track option.idCobertura) {
-                  <mat-option [value]="option.idCobertura">{{ option.nombre }}</mat-option>
-                }
+              @for (option of filteredOptions | async; track option.idCobertura) {
+              <mat-option [value]="option.idCobertura">{{ option.nombre }}</mat-option>
+              }
               } @else {
-                <mat-option disabled>No hay coberturas disponibles</mat-option>
+              <mat-option disabled>No hay coberturas disponibles</mat-option>
               }
             </mat-autocomplete>
             <mat-error *ngIf="form.get('idCobertura')?.hasError('required') && form.get('idCobertura')?.touched">
               Debe seleccionar al menos una cobertura
             </mat-error>
           </mat-form-field>
-        </p>
+        </div>
+        <div class="grid-3">
+          
+          <mat-form-field>
+            <mat-label>Gasto de emisión</mat-label>
+            <input type="number" matInput placeholder="Gasto de emisión" formControlName="gastoEmision">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Comisión de venta</mat-label>
+            <input type="number" matInput placeholder="Comisión de venta" formControlName="comisionVenta">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Prima neta</mat-label>
+            <input type="number" matInput placeholder="Prima neta" formControlName="primaNeta">
+          </mat-form-field>
+        </div>
+        <div class="grid-2">
+          <mat-form-field>
+            <mat-label>Prima total sin iva</mat-label>
+            <input type="number" matInput placeholder="Prima total sin iva" formControlName="primaTotalSinIva">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Prima total con iva</mat-label>
+            <input type="number" matInput placeholder="Prima total con iva" formControlName="primaTotalConIva">
+          </mat-form-field>
+        </div>
 
-       
-        <div class="selected-coberturas">
-          <h3>Coberturas Asignadas</h3>
-          @if (selectedCoberturas.length) {
+        <mat-expansion-panel class="coberturas-panel" hideToggle="false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Coberturas Asignadas
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="selected-coberturas">
+            @if (selectedCoberturas.length) {
             <ul>
               @for (cobertura of selectedCoberturas; track cobertura.idCobertura) {
-                <li>
-                  {{ cobertura.nombre }}
-                  <button  class="btn btn-custom-cancel" (click)="removeCobertura(cobertura)">
-                    cancelar
-                  </button>
-                </li>
+              <li>
+                {{ cobertura.nombre }}
+                <button type="button" mat-icon-button color="warn" (click)="removeCobertura(cobertura)">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </li>
               }
             </ul>
-          } @else {
+            } @else {
             <p>No hay coberturas asignadas.</p>
-          }
-        </div>
+            }
+          </div>
+        </mat-expansion-panel>
 
         <p *ngIf="error" class="error">
           {{ error }}
         </p>
 
+
+       <br>
+       <br>
         <div class="card flex justify-center gap-2">
           <button type="submit" class="btn btn-custom" [disabled]="isLoading">
             Guardar
           </button>
-          
         </div>
+
+
+
+
+
+
       </form>
     </mat-card-content>
   </mat-card>

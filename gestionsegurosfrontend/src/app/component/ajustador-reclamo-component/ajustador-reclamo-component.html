@@ -8,24 +8,14 @@
     <mat-card-content>
       <div class="filter-container">
         <mat-form-field appearance="fill">
-          <mat-label>Seleccionar campo de filtro</mat-label>
-          <mat-select [(ngModel)]="filtroSeleccionado">
-            <mat-option value="idPoliza">ID Póliza</mat-option>
-            <mat-option value="nombreApellido">Nombre completo</mat-option>
-            <mat-option value="dpi">DPI</mat-option>
-            <mat-option value="nit">NIT</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
           <mat-label>Valor de búsqueda</mat-label>
           <input matInput placeholder="Escribe para buscar..." [(ngModel)]="valorBusqueda">
+          <button mat-icon-button matSuffix color="primary" aria-label="Botón de búsqueda" [disabled]="isLoading"
+            (click)="buscarPoliza()">
+            <mat-icon>search</mat-icon>
+          </button>
         </mat-form-field>
 
-        <div class="card flex justify-center gap-2">
-          <button  class="btn btn-custom" [disabled]="isLoading" (click)="buscarPoliza()">
-            Buscar
-          </button>
-        </div>
       </div>
     </mat-card-content>
   </mat-card>
@@ -35,7 +25,7 @@
 <br>
 <div class="crear-paquetes-contenedor">
   <div *ngIf="polizas.length === 0 && !isLoading">
-    <p>No se encontraron pólizas.</p>
+   
   </div>
   <mat-card class="poliza-card" *ngFor="let poliza of polizas; trackBy: trackById">
     <mat-card-header>
@@ -60,7 +50,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions *ngIf="poliza.estado === 'activa'">
-      <button class="btn btn-custom"  (click)="openDialog(poliza)">
+      <button class="btn btn-custom" (click)="openDialog(poliza)">
         Crear Reclamo
       </button>
     </mat-card-actions>

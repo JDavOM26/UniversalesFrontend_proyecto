@@ -51,6 +51,7 @@ export class AjustadorReclamoComponent {
   coberturas: any[] = [];
   filteredOptions!: Observable<any[]>;
   myControl = new FormControl('');
+  sumaDisponible: number = 0;
 
   form: FormGroup = new FormGroup({
     idCobertura: new FormControl('', Validators.required),
@@ -77,13 +78,13 @@ export class AjustadorReclamoComponent {
 
 
   buscarPoliza() {
-    if (!this.valorBusqueda || !this.filtroSeleccionado) {
-      this.snackBar.openSnackBar('Por favor, ingrese un valor y seleccione un tipo de búsqueda', 'Cerrar');
+    if (!this.valorBusqueda) {
+      this.snackBar.openSnackBar('Por favor, ingrese un valor', 'Cerrar');
       return;
     }
 
     this.isLoading = true;
-    this.polizaService.buscarPoliza(this.valorBusqueda, this.filtroSeleccionado).subscribe({
+    this.polizaService.buscarPoliza(this.valorBusqueda).subscribe({
       next: (data) => {
         this.polizas = data;
         this.isLoading = false;
@@ -112,8 +113,7 @@ export class AjustadorReclamoComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const idUsuario = +this.cookies.get('idUsuario');;
-        console.log('Resultado del diálogo:', result);
-
+        this.sumaDisponible = result.sumaDisponible;
         this.guardarReclamo({
           idCobertura: result.idCobertura,
           idPoliza: poliza.idPoliza,
@@ -133,6 +133,11 @@ export class AjustadorReclamoComponent {
 
   guardarReclamo(reclamo: Reclamo) {
     this.isLoading = true;
+    if(this.sumaDisponible<=0){
+       this.isLoading = false;
+       this.snackBar.openSnackBar('No hay suma asegurada disponible', 'Cerrar');
+       return;
+    }
     this.reclamoServicio.guardarReclamo(reclamo).subscribe({
       next: (data) => {
         this.isLoading = false;

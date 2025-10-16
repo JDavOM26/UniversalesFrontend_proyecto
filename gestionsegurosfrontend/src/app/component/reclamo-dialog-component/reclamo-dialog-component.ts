@@ -126,10 +126,10 @@ export class ReclamoDialogComponent {
         ajustador: 0
       };
       
-      console.log('Formulario a enviar:', formValue);
+      
       this.dialogRef.close(formValue);
     } else {
-      console.log('Formulario inválido:', this.form.value);
+     
       this.form.markAllAsTouched();
     }
   }
