@@ -1,4 +1,4 @@
-# Gestión de Seguros - Full-Stack desarrollado en: Spring Boot + Angular + Oracle SQL
+# Gestión de Seguros - Full-Stack: Spring Boot + Angular + Oracle SQL
 
 ## Descripción
 Aplicación full-stack que permite a una aseguradora administrar sus operaciones principales: la venta de pólizas, el registro 
@@ -48,7 +48,7 @@ spring.jpa.show-sql=true
 server.port=8585
 
 ### 3. Frontend Angular
-#### Clonar el repositorio
+Clonar el repositorio
 git clone https://github.com/JDavOM26/UniversalesFrontend_proyecto
 
 #### Instalar todas las dependencias del proyecto
