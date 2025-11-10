@@ -19,7 +19,7 @@ interface ReclamoAprobado {
 
 interface ReclamoRechazado {
   idReclamo: number;
-   perito: number;
+  perito: number;
   observacion: string;
 }
 
@@ -31,21 +31,21 @@ interface ReclamoRechazado {
 })
 export class PeritoSeguimientoComponent implements OnInit, AfterViewInit {
 
- reclamos: any = [];
-     isLoading: boolean = true; 
-     
-  
+  reclamos: any = [];
+  isLoading: boolean = true;
+
+
   constructor(private readonly reclamoServicio: ReclamoService,
     private readonly cookies: CookieService,
     private readonly dialog: MatDialog,
-   private readonly snackBar: SnackBarService
-  ) { 
-     setTimeout(() => {
-        this.isLoading = false;
-      }, 1500);
+    private readonly snackBar: SnackBarService
+  ) {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1500);
   }
 
-  ngOnInit():void{
+  ngOnInit(): void {
     this.buscarReclamosIngresados();
   }
 
@@ -63,15 +63,15 @@ export class PeritoSeguimientoComponent implements OnInit, AfterViewInit {
     }
   }
 
- 
-    buscarReclamosIngresados() {
-      this.isLoading = true;
+
+  buscarReclamosIngresados() {
+    this.isLoading = true;
 
     this.reclamoServicio.buscarReclamosIngresados().subscribe(data => {
       this.reclamos = data.map((item: any) => ({
         ...item,
       }));
-      
+
       this.dataSource.data = this.reclamos;
       this.isLoading = false;
     });
@@ -84,47 +84,54 @@ export class PeritoSeguimientoComponent implements OnInit, AfterViewInit {
   filterValue: string = '';
 
   displayedColumns: string[] = [
-  'id-reclamo',
-  'id-cobertura',
-  'id-poliza',
-  'estado-reclamo',
-  'ajustador',
-  'fecha-siniestro',
-  'fecha-ingreso-reclamo',
-  'acciones'
-];
+    'id-reclamo',
+    'id-cobertura',
+    'id-poliza',
+    'suma-asegurada-disponible',
+    'estado-reclamo',
+    'ajustador',
+    'fecha-siniestro',
+    'fecha-ingreso-reclamo',
+    'acciones'
+  ];
 
 
   aprobarReclamo(u: any): void {
-     
-      const dialogRef = this.dialog.open(AprobarReclamoComponent, {
-        width: '400px',
-        maxWidth: '95vw',
-        autoFocus: false
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          const idUsuario = +this.cookies.get('idUsuario');;
-          console.log('Resultado del diálogo:', result);
-  
-          this.aprobarReclamoApi({
-            idReclamo: u.idReclamo, 
-            perito: idUsuario,
-             montoAprobado: result.montoAprobado,
-             idCobertura: u.idCobertura,
-             idPoliza: u.idPoliza
-          });
-        }
-      });
-    }
 
-      aprobarReclamoApi(reclamo: ReclamoAprobado) {
+    const dialogRef = this.dialog.open(AprobarReclamoComponent, {
+      width: '400px',
+      maxWidth: '95vw',
+      autoFocus: false,
+      data: {
+        idPoliza: u.idPoliza,
+        idCobertura: u.idCobertura
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const idUsuario = +this.cookies.get('idUsuario');;
+        console.log('Resultado del diálogo:', result);
+
+        this.aprobarReclamoApi({
+          idReclamo: u.idReclamo,
+          perito: idUsuario,
+          montoAprobado: result.montoAprobado,
+          idCobertura: u.idCobertura,
+          idPoliza: u.idPoliza
+        });
+      }
+    });
+  }
+
+  aprobarReclamoApi(reclamo: ReclamoAprobado) {
     this.isLoading = true;
     this.reclamoServicio.aprobarReclamo(reclamo).subscribe({
       next: (data) => {
+        this.buscarReclamosIngresados();
         this.isLoading = false;
         this.snackBar.openSnackBar('Reclamo aprobado exitosamente', 'Cerrar');
+        
       },
       error: (error) => {
         console.error('Error al guardar:', error);
@@ -135,32 +142,33 @@ export class PeritoSeguimientoComponent implements OnInit, AfterViewInit {
   }
 
   rechazarReclamo(u: any): void {
-     
-      const dialogRef = this.dialog.open(RechazarReclamoComponent, {
-        width: '400px',
-        maxWidth: '95vw',
-        autoFocus: false
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          const idUsuario = +this.cookies.get('idUsuario');;
-          console.log('Resultado del diálogo:', result);
-  
-          this.rechazarReclamoApi({
-            idReclamo: u.idReclamo,
-            perito: idUsuario,
-             observacion: result.observacion,
-               
-          });
-        }
-      });
-    }
 
-     rechazarReclamoApi(reclamo: ReclamoRechazado) {
+    const dialogRef = this.dialog.open(RechazarReclamoComponent, {
+      width: '400px',
+      maxWidth: '95vw',
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const idUsuario = +this.cookies.get('idUsuario');;
+        console.log('Resultado del diálogo:', result);
+
+        this.rechazarReclamoApi({
+          idReclamo: u.idReclamo,
+          perito: idUsuario,
+          observacion: result.observacion,
+
+        });
+      }
+    });
+  }
+
+  rechazarReclamoApi(reclamo: ReclamoRechazado) {
     this.isLoading = true;
     this.reclamoServicio.rechazarReclamo(reclamo).subscribe({
       next: (data) => {
+        this.buscarReclamosIngresados();
         this.isLoading = false;
         this.snackBar.openSnackBar('Reclamo rechazado exitosamente', 'Cerrar');
       },

@@ -61,7 +61,7 @@ export class EmisorCoberturaComponent implements OnInit {
       this.coberturaServicio.guardarCobertura(cobertura).subscribe({
        next: (data) => {
           this.isLoading = false;
-          this.snackBar.openSnackBar('Cobertura creada exitosamente', 'Cerrar');
+          this.snackBar.openSnackBar(data.response, 'Cerrar');
           this.form.reset();
           this.primaTotalSinIvaCalc = 0;
           this.primaTotalConIvaCalc = 0;

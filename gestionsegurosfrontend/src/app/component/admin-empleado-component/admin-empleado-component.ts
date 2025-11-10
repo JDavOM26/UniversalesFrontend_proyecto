@@ -53,7 +53,7 @@ export class AdminEmpleadoComponent {
       this.usuarioServicio.guardarUsuario(usuario).subscribe({
         next: (data) => {
           this.isLoading = false;
-          this.snackBar.openSnackBar('Usuario guardado exitosamente', 'Cerrar');
+          this.snackBar.openSnackBar(data.response, 'Cerrar');
           this.form.reset();
         },
         error: (error) => {

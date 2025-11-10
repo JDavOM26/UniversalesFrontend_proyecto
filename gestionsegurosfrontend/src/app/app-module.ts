@@ -33,6 +33,7 @@ import { MatTableModule } from '@angular/material/table';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { NavbarComponent } from './component/navbar-component/navbar-component';
 import { EmisorPolizaComponent } from './component/emisor-poliza-component/emisor-poliza-component';
+import { ConfirmDialogComponent } from './component/confirm-dialog-component/confirm-dialog-component'; 
 
 import {MatStepperModule} from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
@@ -41,11 +42,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatExpansionModule} from '@angular/material/expansion';
 
+
 import { AjustadorEstadoReclamoComponent } from './component/ajustador-estado-reclamo-component/ajustador-estado-reclamo-component';
 import { ProgressSpinnerComponent } from './component/progress-spinner-component/progress-spinner-component';
 import { ReclamoDialogComponent } from './component/reclamo-dialog-component/reclamo-dialog-component';
 import { AprobarReclamoComponent } from './component/aprobar-reclamo-component/aprobar-reclamo-component';
 import { RechazarReclamoComponent } from './component/rechazar-reclamo-component/rechazar-reclamo-component';
+import { MantenimientoCoberturasComponent } from './component/mantenimiento-coberturas-component/mantenimiento-coberturas-component';
+import { MantenimientoPaquetesComponent } from './component/mantenimiento-paquetes-component/mantenimiento-paquetes-component';
+import { ListaPolizasComponent } from './component/lista-polizas-component/lista-polizas-component';
 
 
 @NgModule({
@@ -64,7 +69,11 @@ import { RechazarReclamoComponent } from './component/rechazar-reclamo-component
     ProgressSpinnerComponent,
     ReclamoDialogComponent,
     AprobarReclamoComponent,
-    RechazarReclamoComponent
+    RechazarReclamoComponent,
+    MantenimientoCoberturasComponent,
+    MantenimientoPaquetesComponent,
+    ListaPolizasComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {  MatDialogRef } from '@angular/material/dialog';
+import {  MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { PolizaCoberturaService } from '../../service/poliza-cobertura-service';
 
+interface DialogData {
+  idPoliza: number;
+  idCobertura: number;
+}
 @Component({
   selector: 'app-aprobar-reclamo-component',
   standalone: false,
@@ -9,14 +14,19 @@ import {  MatDialogRef } from '@angular/material/dialog';
   styleUrl: './aprobar-reclamo-component.css'
 })
 export class AprobarReclamoComponent {
+   sumaAseguradaDisponible: number | null = null;
    form: FormGroup;
   myControl = new FormControl('');
-  constructor(
-     public dialogRef: MatDialogRef<AprobarReclamoComponent>
-  ){
+ constructor(
+    public dialogRef: MatDialogRef<AprobarReclamoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData, 
+    private readonly polizaCoberturaService: PolizaCoberturaService
+  ) {
     this.form = new FormGroup({
-      montoAprobado: new FormControl('', Validators.required), 
-    })
+      montoAprobado: new FormControl('', [Validators.required, Validators.min(0)]),
+    });
+ 
+    this.buscarSumaAsegurada();
   }
 
   
@@ -24,18 +34,32 @@ export class AprobarReclamoComponent {
     this.dialogRef.close();
   }
 
-  onSubmit(): void {
+onSubmit(): void {
     if (this.form.valid) {
       const formValue = {
         montoAprobado: this.form.get('montoAprobado')?.value,
-      
       };
-      
-      console.log('Formulario a enviar:', formValue);
+      if (this.sumaAseguradaDisponible !== null && formValue.montoAprobado > this.sumaAseguradaDisponible) {
+        this.form.get('montoAprobado')?.setErrors({ max: true });
+        return;
+      }
+
       this.dialogRef.close(formValue);
     } else {
-      console.log('Formulario inválido:', this.form.value);
+     
       this.form.markAllAsTouched();
     }
   }
+
+
+    buscarSumaAsegurada() {
+      this.polizaCoberturaService.obtenerSumaAseguradaDisponible(this.data.idPoliza, this.data.idCobertura).subscribe({
+        next: (data) => {
+          this.sumaAseguradaDisponible = data;
+        },
+        error: (error) => {
+          console.error('Error obteniendo suma asegurada:', error);
+        }
+      });
+    }
 }

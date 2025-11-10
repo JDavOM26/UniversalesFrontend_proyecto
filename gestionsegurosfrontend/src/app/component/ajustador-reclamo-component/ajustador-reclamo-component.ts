@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ReclamoService } from '../../service/reclamo-service';
@@ -8,6 +8,8 @@ import { ReclamoDialogComponent } from '../reclamo-dialog-component/reclamo-dial
 import { CoberturaService } from '../../service/cobertura-service';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 interface Reclamo {
   idCobertura: number;
@@ -25,7 +27,7 @@ interface Reclamo {
 
 interface Poliza {
   idPoliza: number;
-  idContratante: number;
+  contratante: number;
   nombrePoliza: string;
   estado: string;
   vendedor: number;
@@ -42,7 +44,7 @@ interface Poliza {
   templateUrl: './ajustador-reclamo-component.html',
   styleUrl: './ajustador-reclamo-component.css'
 })
-export class AjustadorReclamoComponent {
+export class AjustadorReclamoComponent implements AfterViewInit {
   isLoading: boolean = true;
   filtroSeleccionado: string = '';
   valorBusqueda: string = '';
@@ -52,6 +54,16 @@ export class AjustadorReclamoComponent {
   filteredOptions!: Observable<any[]>;
   myControl = new FormControl('');
   sumaDisponible: number = 0;
+
+  @ViewChild('paginator2') paginator2!: MatPaginator;
+  dataSourcePaginado = new MatTableDataSource<any>([]);
+  totalElements: number = 0;
+
+  ngAfterViewInit() {
+    if (this.paginator2) {
+      this.paginator2.page.subscribe(() => this.buscarPolizasPaginado());
+    }
+  }
 
   form: FormGroup = new FormGroup({
     idCobertura: new FormControl('', Validators.required),
@@ -77,29 +89,45 @@ export class AjustadorReclamoComponent {
   }
 
 
-  buscarPoliza() {
+
+
+
+  buscarPolizasPaginado() {
     if (!this.valorBusqueda) {
       this.snackBar.openSnackBar('Por favor, ingrese un valor', 'Cerrar');
       return;
     }
 
     this.isLoading = true;
-    this.polizaService.buscarPoliza(this.valorBusqueda).subscribe({
-      next: (data) => {
-        this.polizas = data;
-        this.isLoading = false;
-        if (data.length === 0) {
-          this.snackBar.openSnackBar('No se encontraron pólizas', 'Cerrar');
+    const page = this.paginator2 ? this.paginator2.pageIndex : 0;
+    const size = this.paginator2 ? this.paginator2.pageSize : 5;
+
+    this.polizaService.buscarPoliza(this.valorBusqueda, page, size).subscribe({
+      next: (data: any) => {
+        const personasPaginadas = data.content.map((item: any) => ({
+          ...item,
+        }));
+
+
+        this.dataSourcePaginado.data = personasPaginadas;
+        this.totalElements = data.totalElements;
+
+
+        if (this.paginator2) {
+          this.paginator2.length = this.totalElements;
+          this.paginator2.pageIndex = data.number;
+          this.paginator2.pageSize = data.size;
         }
-      },
-      error: (error) => {
-        console.error('Error fetching polizas:', error);
-        this.polizas = [];
+
         this.isLoading = false;
-        this.snackBar.openSnackBar('Error al cargar las pólizas', 'Cerrar');
+      },
+      error: (err) => {
+        console.error('Error buscando personas:', err);
+        this.isLoading = false;
       }
     });
   }
+
 
   openDialog(poliza: Poliza): void {
     this.idPolizaTemp = poliza.idPoliza;
@@ -133,10 +161,10 @@ export class AjustadorReclamoComponent {
 
   guardarReclamo(reclamo: Reclamo) {
     this.isLoading = true;
-    if(this.sumaDisponible<=0){
-       this.isLoading = false;
-       this.snackBar.openSnackBar('No hay suma asegurada disponible', 'Cerrar');
-       return;
+    if (this.sumaDisponible <= 0) {
+      this.isLoading = false;
+      this.snackBar.openSnackBar('No hay suma asegurada disponible', 'Cerrar');
+      return;
     }
     this.reclamoServicio.guardarReclamo(reclamo).subscribe({
       next: (data) => {
@@ -154,6 +182,21 @@ export class AjustadorReclamoComponent {
   trackById(index: number, poliza: Poliza): number {
     return poliza.idPoliza;
   }
+
+
+  displayedColumns: string[] = [
+    'idPoliza',
+    'nombrePoliza',
+    'contratante',
+    'nombreContratante',
+    'fechaCreacion',
+    'fechaVencimiento',
+    'estado',
+    'primaVendidaTotal',
+    'idPaquete',
+    'vendedor',
+    'accion'
+  ];
 
 
 

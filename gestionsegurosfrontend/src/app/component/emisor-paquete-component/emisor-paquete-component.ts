@@ -135,7 +135,7 @@ export class EmisorPaqueteComponent implements OnInit {
       this.paqueteServicio.guardarPaquete(paquete).subscribe({
         next: (data) => {
           this.isLoading = false;
-          this.snackBar.openSnackBar('Paquete guardado exitosamente', 'Cerrar');
+          this.snackBar.openSnackBar(data.response, 'Cerrar');
           this.submitEM.emit(paquete);
           this.form.reset();
           this.form.get('idCobertura')?.setValue([]);

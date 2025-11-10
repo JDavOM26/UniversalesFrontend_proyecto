@@ -35,14 +35,19 @@ export class EmisorPolizaComponent implements OnInit {
 
 
   isLinear = false;
-  hoy: string = new Date().toISOString().split('T')[0];
-  unAnioMenosUnDia: string = new Date(new Date().setFullYear(new Date().getFullYear() + 1) - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+
+  hoy: string = new Date().toLocaleDateString('en-CA');
+  fecha = new Date();
+  unAnioMenosUnDia: string = '';
+
 
   constructor(polizaServicio: PolizaService,
     private readonly cookies: CookieService,
     private readonly snackBar: SnackBarService,
     private readonly clienteService: ClienteService,
     private readonly paqueteService: PaqueteService) {
+
     setTimeout(() => {
       this.isLoading = false;
     }, 1500);
@@ -53,18 +58,33 @@ export class EmisorPolizaComponent implements OnInit {
     this.addCorreoForm();
     this.addDireccionForm();
 
+
   }
 
   ngOnInit(): void {
     this.buscarPaquetes();
+    const hoyDate = new Date();
+    const vencimientoDate = new Date();
+    vencimientoDate.setFullYear(hoyDate.getFullYear() + 1);
+    vencimientoDate.setDate(hoyDate.getDate() - 1);
+
+    const hoy = hoyDate.toLocaleDateString('en-CA');
+    const unAnioMenosUnDia = vencimientoDate.toLocaleDateString('en-CA');
+
+    this.polizaFormGroup.patchValue({
+      fechaCreacion: hoy,
+      fechaVencimiento: unAnioMenosUnDia
+    });
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || ''))
     );
   }
 
-  private _filter(value: string): any[] {
-    const filterValue = value.toLowerCase();
+
+
+  private _filter(value: any): any[] {
+    const filterValue = typeof value === 'string' ? value.toLowerCase() : (value?.nombre || '').toLowerCase();
     return this.paquetes.filter(option =>
       option.nombre.toLowerCase().includes(filterValue)
     );
@@ -178,8 +198,8 @@ export class EmisorPolizaComponent implements OnInit {
 
   validateParticipationSum(): boolean {
     const participacionTotal = this.secondFormGroups.reduce((sum, form) => {
-      const participacion = parseFloat(form.get('participacion')?.value || '0');
-      return sum + (isNaN(participacion) ? 0 : participacion);
+      const participacion = Number.parseFloat(form.get('participacion')?.value || '0');
+      return sum + (Number.isNaN(participacion) ? 0 : participacion);
     }, 0);
 
     if (participacionTotal !== 100) {
@@ -244,9 +264,11 @@ export class EmisorPolizaComponent implements OnInit {
       this.polizaServicio.guardarPoliza(poliza).subscribe({
         next: (data) => {
           this.isLoading = false;
-          this.snackBar.openSnackBar('Poliza emitida exitosamente', 'Cerrar');
+          this.snackBar.openSnackBar(data.response, 'Cerrar');
           this.firstFormGroup.reset();
-          this.secondFormGroups.forEach(form => form.reset());
+          for (const form of this.secondFormGroups) {
+            form.reset();
+          }
           this.secondFormGroups = [this._formBuilder.group({
             primerNombre: new FormControl('', Validators.required),
             segundoNombre: new FormControl(''),
@@ -258,7 +280,9 @@ export class EmisorPolizaComponent implements OnInit {
             genero: new FormControl('', Validators.required),
             parentesco: new FormControl('', Validators.required),
           })];
-          this.thirdFormGroups.forEach(form => form.reset());
+          for (const form of this.thirdFormGroups) {
+            form.reset();
+          }
           this.thirdFormGroups = [this._formBuilder.group({
             primerNombre: new FormControl('', Validators.required),
             segundoNombre: new FormControl(''),
@@ -278,19 +302,24 @@ export class EmisorPolizaComponent implements OnInit {
       });
     } else {
       this.firstFormGroup.markAllAsTouched();
-      this.secondFormGroups.forEach(form => form.markAllAsTouched());
-      this.thirdFormGroups.forEach(form => form.markAllAsTouched());
+      for (const form of this.secondFormGroups) {
+        form.markAllAsTouched();
+      }
+      for (const form of this.thirdFormGroups) {
+        form.markAllAsTouched();
+      }
     }
   }
 
 
   buscarClientePorDocumento(documento: string, tipoDocumento: string) {
     if (this.clienteEstaVacio) {
-
+      this.isLoading = true;
       this.clienteService.buscarClientePorDocumento(documento).subscribe({
         next: (data) => {
 
           if (data) {
+            this.isLoading = false;
             this.cliente = data;
             this.clienteEstaVacio = false;
 
@@ -311,34 +340,10 @@ export class EmisorPolizaComponent implements OnInit {
               genero: data.genero || ''
             });
 
-            if (data.telefonos?.length) {
-              this.telefonoFormGroups = [];
-              data.telefonos.forEach((telefono: { telefono: string }) => {
-                const form = this._formBuilder.group({
-                  telefono: new FormControl(telefono.telefono, Validators.required)
-                });
-                this.telefonoFormGroups.push(form);
-              });
-            }
-            if (data.correos?.length) {
-              this.correoFormGroups = [];
-              data.correos.forEach((correo: { email: string }) => {
-                const form = this._formBuilder.group({
-                  correo: new FormControl(correo.email, [Validators.required, Validators.email])
-                });
-                this.correoFormGroups.push(form);
-              });
-            }
-            if (data.direcciones?.length) {
-              this.direccionFormGroups = [];
-              data.direcciones.forEach((direccion: { direccion: string, tipoDireccion: string }) => {
-                const form = this._formBuilder.group({
-                  direccion: new FormControl(direccion.direccion, Validators.required),
-                  tipoDireccion: new FormControl(direccion.tipoDireccion, Validators.required)
-                });
-                this.direccionFormGroups.push(form);
-              });
-            }
+            this.cargarTelefonos(data.telefonos);
+            this.cargarCorreos(data.correos);
+            this.cargarDirecciones(data.direcciones);
+
             this.snackBar.openSnackBar('Cliente encontrado', 'Cerrar');
           } else {
             this.clienteEstaVacio = true;
@@ -346,6 +351,7 @@ export class EmisorPolizaComponent implements OnInit {
           }
         },
         error: (error) => {
+          this.isLoading = false;
           this.clienteEstaVacio = true;
           this.snackBar.openSnackBar('Error al buscar el cliente', 'Cerrar');
           console.error('Error al buscar cliente:', error);
@@ -354,9 +360,36 @@ export class EmisorPolizaComponent implements OnInit {
     }
   }
 
+  private cargarTelefonos(telefonos: any[] | undefined): void {
+    if (!telefonos?.length) return;
 
+    this.telefonoFormGroups = telefonos.map(t =>
+      this._formBuilder.group({
+        telefono: new FormControl(t.telefono, Validators.required)
+      })
+    );
+  }
 
+  private cargarCorreos(correos: any[] | undefined): void {
+    if (!correos?.length) return;
 
+    this.correoFormGroups = correos.map(c =>
+      this._formBuilder.group({
+        correo: new FormControl(c.email, [Validators.required, Validators.email])
+      })
+    );
+  }
+
+  private cargarDirecciones(direcciones: any[] | undefined): void {
+    if (!direcciones?.length) return;
+
+    this.direccionFormGroups = direcciones.map(d =>
+      this._formBuilder.group({
+        direccion: new FormControl(d.direccion, Validators.required),
+        tipoDireccion: new FormControl(d.tipoDireccion, Validators.required)
+      })
+    );
+  }
 
 
 

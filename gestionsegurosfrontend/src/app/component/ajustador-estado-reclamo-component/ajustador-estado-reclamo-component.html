@@ -33,12 +33,7 @@
                         <td mat-cell *matCellDef="let element"> {{element.idPoliza}} </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="estado-reclamo">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by estado">
-                            Estado Reclamo
-                        </th>
-                        <td mat-cell *matCellDef="let element"> {{element.estadoReclamo}} </td>
-                    </ng-container>
+                    
 
                     <ng-container matColumnDef="ajustador">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by ajustador">
@@ -72,15 +67,37 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date">
                             Fecha Siniestro
                         </th>
-                        <td mat-cell *matCellDef="let element"> {{element.fechaSiniestro | date}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.fechaSiniestro | date:'yyyy-MM-dd' }} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="fecha-ingreso-reclamo">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date">
                             Fecha Ingreso Reclamo
                         </th>
-                        <td mat-cell *matCellDef="let element"> {{element.fechaIngresoReclamo | date}} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.fechaIngresoReclamo| date:'yyyy-MM-dd' }} </td>
                     </ng-container>
+                      <ng-container matColumnDef="fecha-decision-perito">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date">
+                            Fecha Decision Perito
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.fechaDecisionPerito | date:'yyyy-MM-dd'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="estado-reclamo">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by estado">
+    Estado Reclamo
+  </th>
+  <td mat-cell *matCellDef="let element">
+    <span 
+      class="estado-badge" 
+      [ngClass]="{
+        'estado-ingresado': element.estadoReclamo === 'Ingresado',
+        'estado-aprobado': element.estadoReclamo === 'Aprobado',
+        'estado-rechazado': element.estadoReclamo === 'Rechazado'
+      }">
+      {{ element.estadoReclamo | titlecase }}
+    </span>
+  </td>
+</ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

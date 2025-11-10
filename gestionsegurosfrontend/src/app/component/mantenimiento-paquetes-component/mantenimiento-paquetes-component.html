@@ -1,0 +1,104 @@
+<app-navbar-component></app-navbar-component>
+<br>
+<br>
+<br>
+<div class="crear-paquetes-contenedor">
+    <mat-card>
+        <h2>Mantenimiento de paquetes</h2>
+        <mat-card-content>
+            <div class="filter-container">
+                <input type="text" [(ngModel)]="filterValue" (input)="applyFilter($event)" placeholder="Filtrar..." class="filter-input">
+            </div>
+
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="id-cobertura">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by cobertura">
+                            ID Cobertura
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.idPaquete}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nombre">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by nombre">
+                            Nombre
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sumaAsegurada">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by sumaAsegurada">
+                            Suma Asegurada
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.sumaAsegurada | currency}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="gastoEmision">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by gastoEmision">
+                            Gasto Emisión
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.gastoEmision | currency}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="comisionVenta">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by comisionVenta">
+                            Comisión Venta
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.comisionVenta | currency}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="primaNeta">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by primaNeta">
+                            Prima Neta
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.primaNeta | currency}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="primaTotalSinIva">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by primaTotalSinIva">
+                            Prima Total Sin IVA
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.primaTotalSinIva | currency}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="primaTotalConIva">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by primaTotalConIva">
+                            Prima Total Con IVA
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.primaTotalConIva | currency}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="estado">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by estado">
+                            Estado
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="accion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by accion">
+                            Acción
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                         
+                             @if (element.estado === 'Activo') {
+                             <button (click)="actualizarPaquete(element)" class="btn btn-outline-danger">Desactivar</button>
+                             }
+                              @if (element.estado  === 'Inactivo') {
+                              <button (click)="actualizarPaquete(element)" class="btn btn-outline-success">Activar</button>
+                              }
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator #paginator1 [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                    aria-label="Select page of periodic elements">
+                </mat-paginator>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<app-progress-spinner-component *ngIf="isLoading"></app-progress-spinner-component>

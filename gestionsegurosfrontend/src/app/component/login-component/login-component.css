@@ -58,3 +58,13 @@ mat-form-field {
     width: 100%;              
     margin-top: 10px;          
 }
+
+.btn-custom {
+  background-color: #00457e;
+  color: #fff;       
+  border: none;
+}
+
+.btn-custom:hover {
+  background-color: #00345e; 
+}

@@ -65,13 +65,14 @@ export class AjustadorEstadoReclamoComponent implements OnInit, AfterViewInit {
   'id-reclamo',
   'id-cobertura',
   'id-poliza',
-  'estado-reclamo',
   'ajustador',
   'perito',
   'monto-aprobado',
   'observacion',
   'fecha-siniestro',
-  'fecha-ingreso-reclamo'
+  'fecha-ingreso-reclamo',
+  'fecha-decision-perito',
+    'estado-reclamo'
 ];
 
 }

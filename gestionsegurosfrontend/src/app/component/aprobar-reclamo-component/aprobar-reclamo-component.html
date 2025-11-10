@@ -2,12 +2,27 @@
   <h2>Ingresar monto aprobado</h2>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="grid-container">
+ 
       <mat-form-field class="example-full-width">
-        <mat-label>monto</mat-label>
-        <input matInput formControlName="montoAprobado" type="number">
-        <mat-error *ngIf="form.get('montoAprobado')?.hasError('required')">El monto aprobado es requerido</mat-error>
+        <mat-label>Suma Asegurada Disponible</mat-label>
+        <input matInput [value]="sumaAseguradaDisponible | currency" disabled>
+        <mat-hint *ngIf="sumaAseguradaDisponible === null">Cargando suma asegurada...</mat-hint>
       </mat-form-field>
-      </div>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Monto Aprobado</mat-label>
+        <input matInput formControlName="montoAprobado" type="number">
+        <mat-error *ngIf="form.get('montoAprobado')?.hasError('required')">
+          El monto aprobado es requerido
+        </mat-error>
+        <mat-error *ngIf="form.get('montoAprobado')?.hasError('min')">
+          El monto debe ser mayor a 0
+        </mat-error>
+        <mat-error *ngIf="form.get('montoAprobado')?.hasError('max')">
+          El monto no puede exceder la suma asegurada disponible ({{sumaAseguradaDisponible | currency}})
+        </mat-error>
+      </mat-form-field>
+    </div>
     <div class="button-container">
       <button mat-button type="button" (click)="onCancel()">Cancelar</button>
       <button class="btn btn-custom" type="submit" [disabled]="!form.valid">Guardar</button>

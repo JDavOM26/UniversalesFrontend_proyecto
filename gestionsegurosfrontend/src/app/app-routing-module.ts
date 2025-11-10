@@ -10,6 +10,9 @@ import { PeritoSeguimientoComponent } from './component/perito-seguimiento-compo
 import { AjustadorReclamoComponent } from './component/ajustador-reclamo-component/ajustador-reclamo-component';
 import { AjustadorEstadoReclamoComponent } from './component/ajustador-estado-reclamo-component/ajustador-estado-reclamo-component';
 import { ProgressSpinnerComponent } from './component/progress-spinner-component/progress-spinner-component';
+import { MantenimientoCoberturasComponent } from './component/mantenimiento-coberturas-component/mantenimiento-coberturas-component';
+import { MantenimientoPaquetesComponent } from './component/mantenimiento-paquetes-component/mantenimiento-paquetes-component';
+import { ListaPolizasComponent } from './component/lista-polizas-component/lista-polizas-component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: AdminDashboardComponent },
@@ -18,9 +21,12 @@ const routes: Routes = [
   { path: 'paquetes', component: EmisorPaqueteComponent },
   { path: 'polizas', component: EmisorPolizaComponent },
   { path: 'seguimiento-reclamo', component: PeritoSeguimientoComponent },
-    { path: 'ajustador-reclamo', component: AjustadorReclamoComponent },
-        { path: 'ajustador-estado-reclamo', component: AjustadorEstadoReclamoComponent },
-                { path: 'spinner', component: ProgressSpinnerComponent },
+  { path: 'ajustador-reclamo', component: AjustadorReclamoComponent },
+  { path: 'ajustador-estado-reclamo', component: AjustadorEstadoReclamoComponent },
+  { path: 'mantenimiento-coberturas', component: MantenimientoCoberturasComponent },
+  { path: 'mantenimiento-paquetes', component: MantenimientoPaquetesComponent },
+    { path: 'ver-polizas', component: ListaPolizasComponent },
+  { path: 'spinner', component: ProgressSpinnerComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 

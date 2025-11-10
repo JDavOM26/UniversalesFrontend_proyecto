@@ -10,15 +10,34 @@ export class PolizaService {
 
   constructor(private readonly http: HttpClient) {}
 
- guardarPoliza(poliza: any): Observable<string> {
+ guardarPoliza(poliza: any): Observable<any> {
   return this.postUrl(`${this.apiUrl}/emitir-poliza`, poliza);
 }
 
- buscarPoliza(valor: string): Observable<any> {
-    const params = new HttpParams()
-      .set('valor', valor);
-   
-    return this.getUrl(`${this.apiUrl}/buscar-poliza`, params);
+ 
+
+  
+
+   buscarPoliza(valor:string, page: number, size: number): Observable<any> {
+    let params = new HttpParams()
+    .set('valor', valor)
+      .set('page', page.toString())
+      .set('size', size.toString());
+    
+  
+    return this.http.get(`${this.apiUrl}/buscar-poliza-reclamo`, { params });
+  }
+
+   buscarPolizaPaginado(page: number, size: number, filter?: string): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    
+    if (filter) {
+      params = params.set('filter', filter);
+    }
+
+    return this.http.get(`${this.apiUrl}/buscar-poliza-paginado`, { params });
   }
 
 
@@ -27,8 +46,8 @@ export class PolizaService {
   }
 
 
- private postUrl(endpoint: string, objeto: any): Observable<string> {
-  return this.http.post(endpoint, objeto, { responseType: 'text' });
-}
+  private postUrl(endpoint: string, objeto: any): Observable<any> {
+    return this.http.post<any>(endpoint, objeto);
+  }
 
 }

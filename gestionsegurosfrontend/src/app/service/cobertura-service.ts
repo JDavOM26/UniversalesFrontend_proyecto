@@ -10,10 +10,9 @@ export class CoberturaService {
 
   constructor(private readonly http: HttpClient) {}
 
-  guardarCobertura(cobertura: any): Observable<any> {
-    return this.postUrl(`${this.apiUrl}/crear-cobertura`, cobertura);
-  }
-
+guardarCobertura(cobertura: any): Observable<any> {
+  return this.http.post(`${this.apiUrl}/crear-cobertura`, cobertura);
+}
    buscarCoberturas(): Observable<any> {
     return this.getUrl(`${this.apiUrl}/obtener-coberturas`);
   }
@@ -33,4 +32,5 @@ export class CoberturaService {
     return this.http.post<any>(endpoint, objeto);
   }
 
+  
 }
