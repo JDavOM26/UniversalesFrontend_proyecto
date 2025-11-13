@@ -1,0 +1,42 @@
+<app-navbar-component></app-navbar-component>
+
+@if (perfilDato) {
+  <div class="perfil-container">
+    <form [formGroup]="form" (ngSubmit)="actualizarImagen()">
+      <mat-card class="perfil-card" appearance="outlined">
+        <mat-card-header>
+          @if (getImagen()) {
+            <img mat-card-avatar [src]="getImagen()" alt="Foto de perfil"/>
+          } @else {
+            <div mat-card-avatar class="avatar-placeholder">
+              <img mat-card-avatar src="https://i.pinimg.com/736x/15/0f/a8/150fa8800b0a0d5633abc1d1c4db3d87.jpg" alt="No foto"/>
+            </div>
+          }
+
+
+          @if (imagenPreview) {
+            <p><img [src]="imagenPreview" alt="" width="150"></p>
+          }
+        </mat-card-header>
+
+        <mat-card-content>
+          <p>
+            <label for="imagen"><strong>Cambiar Imagen</strong></label>
+          </p>
+          <p>
+            <input id="imagen" type="file" (change)="onFileSelected($event)" accept="image/*"/>
+          </p>
+          <h2 class="perfil-titulo">Informacion del usuario</h2>
+
+          <p><strong>Usuario:</strong> {{ perfilDato.username }}</p>
+          <p><strong>Rol:</strong> {{ perfilDato.rol }}</p>
+        </mat-card-content>
+
+
+        <mat-card-actions align="end">
+          <button mat-flat-button color="primary" type="submit" [disabled]="!imagenFile">Guardar Cambios</button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+}

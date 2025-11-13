@@ -51,6 +51,7 @@ import { RechazarReclamoComponent } from './component/rechazar-reclamo-component
 import { MantenimientoCoberturasComponent } from './component/mantenimiento-coberturas-component/mantenimiento-coberturas-component';
 import { MantenimientoPaquetesComponent } from './component/mantenimiento-paquetes-component/mantenimiento-paquetes-component';
 import { ListaPolizasComponent } from './component/lista-polizas-component/lista-polizas-component';
+import { MiPerfil } from './component/mi-perfil/mi-perfil';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { ListaPolizasComponent } from './component/lista-polizas-component/lista
     MantenimientoCoberturasComponent,
     MantenimientoPaquetesComponent,
     ListaPolizasComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    MiPerfil
   ],
   imports: [
     BrowserModule,

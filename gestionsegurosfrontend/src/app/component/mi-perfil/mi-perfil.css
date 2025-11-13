@@ -1,0 +1,29 @@
+.perfil-container {
+  height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.perfil-card {
+  width: 100%;
+  max-width: 650px;
+  padding: 16px 24px;
+}
+
+.perfil-titulo {
+  margin: 8px 0 16px;
+  font-size: 20px;
+}
+
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:host ::ng-deep .mat-mdc-card-avatar {
+  width: 250px;
+  height: 250px;
+}
