@@ -107,7 +107,7 @@ export class EmisorPolizaComponent implements OnInit {
   }
 
   displayFn(paquete: any): string {
-    return paquete && paquete.nombre ? paquete.nombre : '';
+    return paquete?.nombre ? paquete.nombre : '';
   }
 
   onOptionSelected(event: any) {
