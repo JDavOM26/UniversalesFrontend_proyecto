@@ -1,12 +1,16 @@
 <app-navbar-component></app-navbar-component>
+
 <br>
 <br>
 <br>
+
 <div class="crear-empleados-contenedor">
   <mat-card>
     <h2>Crear Nuevo Empleado</h2>
+
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="guardarUsuario()">
+
         <p>
           <mat-form-field>
             <input type="text" matInput placeholder="Username" formControlName="username">
@@ -20,28 +24,42 @@
         </p>
 
         <mat-form-field appearance="fill">
-          <mat-label>Rol*</mat-label>
+          <mat-label>Rol</mat-label>
           <select matNativeControl formControlName="rol" required>
-            <option value="" disabled selected>Seleccione rol</option>
-            <option *ngFor="let option of options" [value]="option.value">
-              {{ option.value }}
-            </option>
+            <option value="" disabled>Seleccione rol</option>
+
+            @for (option of options; track option.value) {
+              <option [value]="option.value">
+                {{ option.value }}
+              </option>
+            }
           </select>
         </mat-form-field>
 
-
-        <p *ngIf="error" class="error">
-          {{ error }}
+        <p>
+          <label for="imagen">Imagen del usuario</label>
+          <input id="imagen" type="file" (change)="onFileSelected($event)" accept="image/*"/>
         </p>
 
+        @if (imagenPreview) {
+          <p><img [src]="imagenPreview" alt="" width="150"></p>
+        }
+
+        @if (error) {
+          <p class="error">
+            {{ error }}
+          </p>
+        }
+
         <div class="card flex justify-center gap-2">
-          <button type="submit" class="btn btn-custom">
-            Guardar
-          </button>
+          <button type="submit" class="btn btn-custom" [disabled]="isLoading">Guardar</button>
         </div>
+
       </form>
     </mat-card-content>
   </mat-card>
 </div>
 
-<app-progress-spinner-component *ngIf="isLoading"></app-progress-spinner-component>
+@if (isLoading) {
+  <app-progress-spinner-component></app-progress-spinner-component>
+}

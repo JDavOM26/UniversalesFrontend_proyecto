@@ -99,7 +99,7 @@ export class EmisorPaqueteComponent implements OnInit {
   }
 
   displayFn(cobertura: any): string {
-    return cobertura && cobertura.nombre ? cobertura.nombre : '';
+    return cobertura?.nombre ? cobertura.nombre : '';
   }
 
   onOptionSelected(event: MatAutocompleteSelectedEvent) {
@@ -141,7 +141,7 @@ export class EmisorPaqueteComponent implements OnInit {
           this.form.get('idCobertura')?.setValue([]);
           this.selectedCoberturas = [];
           this.myControl.reset();
-         
+
           this.form.patchValue({
             primaTotalSinIva: 0,
             primaTotalConIva: 0
@@ -193,6 +193,6 @@ export class EmisorPaqueteComponent implements OnInit {
       primaNeta: totalPrimaNetaCoberturas,
       primaTotalSinIva: primaTotalSinIva,
       primaTotalConIva: primaTotalConIva
-    }, { emitEvent: false }); 
+    }, { emitEvent: false });
   }
 }
